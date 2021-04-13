@@ -30,8 +30,11 @@ public final class ArithmeticTokenizer {
      */
     public String[] getTokensFromFormula(String formula) {
         formula = formula.replaceAll("\\s", "");
+        System.out.println(formula);
         formula = replaceUnaryMinuses(formula);
+        System.out.println(formula);
         formula = formatFormula(formula);
+        System.out.println(formula);
         return formula.split(" ");
     }
 
@@ -58,6 +61,8 @@ public final class ArithmeticTokenizer {
         formula = formula.replaceAll("\\*", " * ");
         formula = formula.replaceAll("/", " / ");
         formula = formula.replaceAll("\\^", " ^ ");
+        formula = formula.replaceAll("\\(","( ");
+        formula = formula.replaceAll("\\)"," )");
         return formula;
     }
 

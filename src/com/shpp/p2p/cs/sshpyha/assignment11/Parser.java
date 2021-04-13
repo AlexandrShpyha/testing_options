@@ -38,7 +38,7 @@ public class Parser {
      */
     public TreeNode parseFormula(String formula) throws Exception {
         tokens = tokenizer.getTokensFromFormula(formula);
-//        System.out.println(Arrays.toString(tokens));
+        System.out.println(Arrays.toString(tokens));
         return parseExpression();
     }
 
@@ -119,22 +119,25 @@ public class Parser {
      */
     public TreeNode parseFactor() throws Exception {
         try {
+
             String nextToken = tokens[pos];
-            pos++;
-            if (nextToken.charAt(0) == '#' && nextToken.length() > 1 && Character.isDigit(nextToken.charAt(1))) {
-                double numberPart = Double.parseDouble(nextToken.substring(1));
-                return new Negate(new Number(numberPart));
-            } else if (Character.isDigit(nextToken.charAt(0))) {
-                return new Number(Double.parseDouble(nextToken));
-            } else if (Character.isLetter(nextToken.charAt(0))) {
-                return new Variable(nextToken, constants);
-            } else if (Character.isLetter(nextToken.charAt(1)) && nextToken.charAt(0) == '#') {
-                return new Negate(new Variable("" + nextToken.substring(1), constants));
-            } else {
-                throw new Exception("Wrong operand at position: " + pos);
+            if (nextToken.charAt(0) == '#' && nextToken.length() > 1) {
+                return new Negate(createNode(nextToken.substring(1)));
             }
+            return createNode(nextToken);
         } catch (Exception e) {
             throw new Exception("Unexpected operand in expression");
+        }
+    }
+
+    private TreeNode createNode(String nextToken) throws Exception {
+        pos++;
+        if (Character.isDigit(nextToken.charAt(0))) {
+            return new Number(Double.parseDouble(nextToken));
+        } else if (Character.isLetter(nextToken.charAt(0))) {
+            return new Variable(nextToken, constants);
+        } else {
+            throw new Exception("Wrong operand at position: " + pos);
         }
     }
 

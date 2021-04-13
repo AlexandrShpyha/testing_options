@@ -42,7 +42,7 @@ public class CalculatorPart2 {
      * Prints parsed formula and evaluates it
      */
     public void calculate() {
-        System.out.println(constantValues);
+//        System.out.println(constantValues);
         treeRoot.print();
         try {
             System.out.println(" = " + treeRoot.evaluate());
