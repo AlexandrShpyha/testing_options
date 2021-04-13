@@ -22,9 +22,4 @@ public class Variable implements TreeNode {
             return value;
         } else throw new Exception("There is no value for variable: " + name);
     }
-
-    @Override
-    public void print() {
-        System.out.print(name);
-    }
 }

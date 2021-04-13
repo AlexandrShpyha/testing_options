@@ -14,9 +14,4 @@ public class Number implements TreeNode {
     public Double evaluate() {
         return this.value;
     }
-
-    @Override
-    public void print() {
-        System.out.print(value);
-    }
 }

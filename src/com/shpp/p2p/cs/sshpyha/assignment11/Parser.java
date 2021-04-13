@@ -1,5 +1,6 @@
 package com.shpp.p2p.cs.sshpyha.assignment11;
 
+import com.shpp.p2p.cs.sshpyha.assignment11.exceptions.BracesException;
 import com.shpp.p2p.cs.sshpyha.assignment11.tree.*;
 import com.shpp.p2p.cs.sshpyha.assignment11.tree.Number;
 
@@ -39,6 +40,11 @@ public class Parser {
     public TreeNode parseFormula(String formula) throws Exception {
         tokens = tokenizer.getTokensFromFormula(formula);
         System.out.println(Arrays.toString(tokens));
+        for (String token : tokens) {
+            if (token.charAt(0) == '#') {
+                System.out.print("-" + token.substring(1) + " ");
+            } else System.out.print(token + " ");
+        }
         return parseExpression();
     }
 
@@ -112,32 +118,68 @@ public class Parser {
     }
 
     /**
-     * Parses factor as number, variable, negated number or variable
+     * Parses factor, if it has minus before it, gets rid of it
      *
      * @return returns reference to exponent factor node
      * @throws Exception throws all exceptions with messages that can be thrown when creating tree
      */
     public TreeNode parseFactor() throws Exception {
         try {
-
             String nextToken = tokens[pos];
             if (nextToken.charAt(0) == '#' && nextToken.length() > 1) {
                 return new Negate(createNode(nextToken.substring(1)));
             }
             return createNode(nextToken);
         } catch (Exception e) {
-            throw new Exception("Unexpected operand in expression");
+            System.out.println(e.getMessage());
+            System.exit(1);
+            return null;
         }
     }
 
+    /**
+     * Creates different nodes types from token
+     *
+     * @param nextToken token to be parsed
+     * @return returns created tree node
+     * @throws Exception
+     */
     private TreeNode createNode(String nextToken) throws Exception {
         pos++;
-        if (Character.isDigit(nextToken.charAt(0))) {
+        if (nextToken.equals("(")) {
+            TreeNode node = parseExpression();
+            if (pos < tokens.length && tokens[pos].equals(")")) {
+                String operator = tokens[pos];
+                pos++;
+                if (operator.equals(")")) {
+                    return node;
+                } else throw new BracesException("Something bad with parenthesis");
+            } else throw new BracesException("Something bad with parenthesis");
+        } else if (isFunction(nextToken)) {
+            return new Function(createNode(tokens[pos]), FunctionList.valueOf(nextToken));
+        } else if (Character.isDigit(nextToken.charAt(0))) {
             return new Number(Double.parseDouble(nextToken));
         } else if (Character.isLetter(nextToken.charAt(0))) {
             return new Variable(nextToken, constants);
+        } else if (nextToken.equals(")")) {
+            throw new BracesException("Something bad with parenthesis");
         } else {
             throw new Exception("Wrong operand at position: " + pos);
+        }
+    }
+
+    /**
+     * Cheching whether token is function name or not
+     *
+     * @param nextToken token to be checked
+     * @return returns boolean value
+     */
+    private boolean isFunction(String nextToken) {
+        try {
+            FunctionList.valueOf(nextToken);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
         }
     }
 

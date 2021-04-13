@@ -43,9 +43,11 @@ public class CalculatorPart2 {
      */
     public void calculate() {
 //        System.out.println(constantValues);
-        treeRoot.print();
         try {
-            System.out.println(" = " + treeRoot.evaluate());
+            System.out.println("= " + treeRoot.evaluate());
+            if ( !constants.isEmpty() ) {
+                System.out.println(constants.toString());
+            }
         } catch (Exception e) {
             System.out.println("\n" + e.getMessage());
         }

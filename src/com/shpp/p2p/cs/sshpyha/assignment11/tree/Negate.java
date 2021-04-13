@@ -14,10 +14,4 @@ public class Negate implements TreeNode {
     public Double evaluate() throws Exception {
         return nextNode.evaluate() * (-1);
     }
-
-    @Override
-    public void print() {
-        System.out.print("-");
-        nextNode.print();
-    }
 }
