@@ -35,9 +35,8 @@ public class Parser {
      *
      * @param formula string that contains formula
      * @return returns reference to root node
-     * @throws Exception throws all exceptions with messages that can be thrown when creating tree
      */
-    public TreeNode parseFormula(String formula) throws Exception {
+    public TreeNode parseFormula(String formula) {
         tokens = tokenizer.getTokensFromFormula(formula);
         System.out.println(Arrays.toString(tokens));
         for (String token : tokens) {
@@ -52,9 +51,8 @@ public class Parser {
      * Parses expression es sequence of terms
      *
      * @return returns reference to root node
-     * @throws Exception throws all exceptions with messages that can be thrown when creating tree
      */
-    public TreeNode parseExpression() throws Exception {
+    public TreeNode parseExpression() {
         TreeNode first = parseTerm();
 
         while (pos < tokens.length) {
@@ -76,14 +74,12 @@ public class Parser {
      * Parses term es sequence of exponent factors
      *
      * @return returns reference to term node
-     * @throws Exception throws all exceptions with messages that can be thrown when creating tree
      */
-    public TreeNode parseTerm() throws Exception {
+    public TreeNode parseTerm(){
         TreeNode first = parseExpFactor();
 
         while (pos < tokens.length) {
             String operator = tokens[pos];
-
             if (operator.equals("*")) {
                 pos++;
                 TreeNode second = parseExpFactor();
@@ -101,13 +97,16 @@ public class Parser {
      * Parses exponent factor es sequence of simple factors
      *
      * @return returns reference to exponent factor node
-     * @throws Exception throws all exceptions with messages that can be thrown when creating tree
      */
-    public TreeNode parseExpFactor() throws Exception {
+    public TreeNode parseExpFactor() {
         TreeNode first = parseFactor();
 
         if (pos < tokens.length) {
             String operator = tokens[pos];
+            if (operator.equals("(")){
+                System.out.println("Bad parenthesis");
+                System.exit(1);
+            }
             if (operator.equals("^")) {
                 pos++;
                 TreeNode second = parseExpFactor();
@@ -121,15 +120,18 @@ public class Parser {
      * Parses factor, if it has minus before it, gets rid of it
      *
      * @return returns reference to exponent factor node
-     * @throws Exception throws all exceptions with messages that can be thrown when creating tree
      */
-    public TreeNode parseFactor() throws Exception {
+    public TreeNode parseFactor() {
         try {
             String nextToken = tokens[pos];
             if (nextToken.charAt(0) == '#' && nextToken.length() > 1) {
                 return new Negate(createNode(nextToken.substring(1)));
             }
             return createNode(nextToken);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Bad expression ending");
+            System.exit(1);
+            return null;
         } catch (Exception e) {
             System.out.println(e.getMessage());
             System.exit(1);
@@ -149,11 +151,8 @@ public class Parser {
         if (nextToken.equals("(")) {
             TreeNode node = parseExpression();
             if (pos < tokens.length && tokens[pos].equals(")")) {
-                String operator = tokens[pos];
                 pos++;
-                if (operator.equals(")")) {
-                    return node;
-                } else throw new BracesException("Something bad with parenthesis");
+                return node;
             } else throw new BracesException("Something bad with parenthesis");
         } else if (isFunction(nextToken)) {
             return new Function(createNode(tokens[pos]), FunctionList.valueOf(nextToken));

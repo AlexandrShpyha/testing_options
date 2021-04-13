@@ -29,8 +29,9 @@ public class CalculatorPart2 {
     CalculatorPart2(List<String> arguments) {
         Parser parser = new Parser();
         initializeArgs(arguments);
+        treeRoot = parser.parseFormula(formula);
+        //TODO lower level of exception handling
         try {
-            treeRoot = parser.parseFormula(formula);
             constantValues = parser.parseVariables(constants);
         } catch (Exception e) {
             System.out.println(e.getMessage());
