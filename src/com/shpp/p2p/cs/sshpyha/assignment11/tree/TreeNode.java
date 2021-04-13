@@ -6,5 +6,5 @@ package com.shpp.p2p.cs.sshpyha.assignment11.tree;
 public interface TreeNode {
     void print();
 
-    Double eval() throws Exception;
+    Double evaluate() throws Exception;
 }

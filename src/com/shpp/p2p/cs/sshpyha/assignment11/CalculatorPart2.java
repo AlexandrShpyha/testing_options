@@ -45,7 +45,7 @@ public class CalculatorPart2 {
         System.out.println(constantValues);
         treeRoot.print();
         try {
-            System.out.println(" = " + treeRoot.eval());
+            System.out.println(" = " + treeRoot.evaluate());
         } catch (Exception e) {
             System.out.println("\n" + e.getMessage());
         }

@@ -56,11 +56,11 @@ public class Parser {
             if (operator.equals("+")) {
                 pos++;
                 TreeNode second = parseTerm();
-                first = new Add(first, second);
+                first = new BinaryOperation(first, second, BinaryType.ADD);
             } else if (operator.equals("-")) {
                 pos++;
                 TreeNode second = parseTerm();
-                first = new Minus(first, second);
+                first = new BinaryOperation(first, second, BinaryType.MINUS);
             } else break;
         }
         return first;
@@ -81,11 +81,11 @@ public class Parser {
             if (operator.equals("*")) {
                 pos++;
                 TreeNode second = parseExpFactor();
-                first = new Multiply(first, second);
+                first = new BinaryOperation(first, second, BinaryType.MULTIPLY);
             } else if (operator.equals("/")) {
                 pos++;
                 TreeNode second = parseExpFactor();
-                first = new Divide(first, second);
+                first = new BinaryOperation(first, second, BinaryType.DIVIDE);
             } else break;
         }
         return first;
@@ -105,7 +105,7 @@ public class Parser {
             if (operator.equals("^")) {
                 pos++;
                 TreeNode second = parseExpFactor();
-                return new Power(first, second);
+                return new BinaryOperation(first, second, BinaryType.POWER);
             }
         }
         return first;

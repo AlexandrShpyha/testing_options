@@ -11,8 +11,8 @@ public class Negate implements TreeNode {
     }
 
     @Override
-    public Double eval() throws Exception {
-        return nextNode.eval() * (-1);
+    public Double evaluate() throws Exception {
+        return nextNode.evaluate() * (-1);
     }
 
     @Override

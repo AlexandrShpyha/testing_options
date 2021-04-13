@@ -16,7 +16,7 @@ public class Variable implements TreeNode {
     }
 
     @Override
-    public Double eval() throws Exception {
+    public Double evaluate() throws Exception {
         Double value = constants.get(name);
         if (value != null) {
             return value;
