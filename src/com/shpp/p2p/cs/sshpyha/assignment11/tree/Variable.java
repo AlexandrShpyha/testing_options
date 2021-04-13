@@ -16,15 +16,10 @@ public class Variable implements TreeNode {
     }
 
     @Override
-    public Double eval() throws Exception {
+    public Double evaluate() throws Exception {
         Double value = constants.get(name);
         if (value != null) {
             return value;
         } else throw new Exception("There is no value for variable: " + name);
-    }
-
-    @Override
-    public void print() {
-        System.out.print(name);
     }
 }

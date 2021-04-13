@@ -29,8 +29,9 @@ public class CalculatorPart2 {
     CalculatorPart2(List<String> arguments) {
         Parser parser = new Parser();
         initializeArgs(arguments);
+        treeRoot = parser.parseFormula(formula);
+        //TODO lower level of exception handling
         try {
-            treeRoot = parser.parseFormula(formula);
             constantValues = parser.parseVariables(constants);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -42,10 +43,12 @@ public class CalculatorPart2 {
      * Prints parsed formula and evaluates it
      */
     public void calculate() {
-        System.out.println(constantValues);
-        treeRoot.print();
+//        System.out.println(constantValues);
         try {
-            System.out.println(" = " + treeRoot.eval());
+            System.out.println("= " + treeRoot.evaluate());
+            if ( !constants.isEmpty() ) {
+                System.out.println(constants.toString());
+            }
         } catch (Exception e) {
             System.out.println("\n" + e.getMessage());
         }

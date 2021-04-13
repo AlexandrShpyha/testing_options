@@ -1,5 +1,7 @@
 package com.shpp.p2p.cs.sshpyha.assignment11;
 
+import com.shpp.p2p.cs.sshpyha.assignment11.tree.FunctionList;
+
 /**
  * Class that breaks strings with formula and variables into tokens
  */
@@ -58,6 +60,13 @@ public final class ArithmeticTokenizer {
         formula = formula.replaceAll("\\*", " * ");
         formula = formula.replaceAll("/", " / ");
         formula = formula.replaceAll("\\^", " ^ ");
+        formula = formula.replaceAll("\\(", " ( ");
+        formula = formula.replaceAll("# \\(", "#( ");
+        formula = formula.replaceAll("\\)", " ) ");
+        formula = formula.replaceAll("  ", " ");
+        if (formula.charAt(0) == ' ') {
+            formula = formula.substring(1);
+        }
         return formula;
     }
 
